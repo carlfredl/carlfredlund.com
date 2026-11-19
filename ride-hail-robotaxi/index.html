@@ -1462,10 +1462,10 @@ function flyTo(id){const [x,y]=XY[id];const sx=x*T.k+T.x,sy=y*T.k+T.y;const z=T.
 // pointer pan / pinch
 const ptrs=new Map();let moved=false,last=null,pinch0=null;
 const toV=e=>{const r=svg.getBoundingClientRect();return [(e.clientX-r.left)/r.width*VW,(e.clientY-r.top)/r.height*VH]};
-svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,toV(e));moved=false;last=toV(e);if(ptrs.size===2){const [a,b]=[...ptrs.values()];pinch0={d:Math.hypot(a[0]-b[0],a[1]-b[1]),k:T.k}}});
+svg.addEventListener("pointerdown",e=>{ptrs.set(e.pointerId,toV(e));moved=false;last=toV(e);if(ptrs.size===2){const [a,b]=[...ptrs.values()];pinch0={d:Math.hypot(a[0]-b[0],a[1]-b[1]),k:T.k}}});
 svg.addEventListener("pointermove",e=>{if(!ptrs.has(e.pointerId))return;const p=toV(e);ptrs.set(e.pointerId,p);
  if(ptrs.size===2&&pinch0){const [a,b]=[...ptrs.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;zoomAt(pinch0.k*d/pinch0.d/T.k,mx,my);moved=true;return}
- const dx=p[0]-last[0],dy=p[1]-last[1];if(Math.abs(dx)+Math.abs(dy)>3||moved){moved=true;svg.classList.add("drag");T.x+=dx;T.y+=dy;clampT();place();last=p}});
+ const dx=p[0]-last[0],dy=p[1]-last[1];if(Math.abs(dx)+Math.abs(dy)>3||moved){if(!moved){try{svg.setPointerCapture(e.pointerId)}catch(_){}}moved=true;svg.classList.add("drag");T.x+=dx;T.y+=dy;clampT();place();last=p}});
 const up=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch0=null;if(!ptrs.size){svg.classList.remove("drag");const f=fac();if(Math.abs(f-curF)>.04)drawMarkers();setTimeout(()=>moved=false,0)}};
 svg.addEventListener("pointerup",up);svg.addEventListener("pointercancel",up);
 svg.addEventListener("wheel",e=>{if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();const [px,py]=toV(e);zoomAt(Math.exp(-e.deltaY*.0025),px,py)},{passive:false});
