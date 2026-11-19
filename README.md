@@ -2,10 +2,8 @@
 
 Static site, hosted on GitHub Pages.
 
-## Add a new piece
-1. Make a folder named for the piece, e.g. `/new-piece/`, with an `index.html` inside.
-2. Add a thumbnail (16:9 JPG) to `/assets/`.
-3. Add a new `<li>` at the top of the Work list in `/index.html`.
+- `/haildex/`: Haildex, the ride-hail and robotaxi map.
+- `/eu-digital-regulation/`: EU digital regulation comparison.
+- `/ride-hail-robotaxi/`: redirects to `/haildex/`.
 
-## Before publishing
-Replace `[One or two lines about you…]`, `[LINKEDIN URL]`, and `[EMAIL]` in `/index.html`.
+To add a piece: make a folder with an `index.html`, add a 16:9 JPG thumbnail to `/assets/`, and add an entry to the list in `/index.html`.
